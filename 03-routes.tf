@@ -1,12 +1,15 @@
 resource "aws_route_table" "rtb-terra" {
   vpc_id = "${aws_vpc.vpc-terra.id}"
-    tags = {
-    Name = "rtb-terra"
-  }
+    
 
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.igw-terra.id}"
+  }
+
+
+tags = {
+    Name = "rtb-terra"
   }
 }
 
@@ -27,10 +30,10 @@ resource "aws_route_table_association" "pub2" {
 
 
 resource "aws_eip" "default" {
-}
 tags = {
     Name = "terra-eip"
   }
+}
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${aws_eip.default.id}"
@@ -63,4 +66,3 @@ resource "aws_route_table_association" "pri2" {
   subnet_id      = "${aws_subnet.pri2.id}"
   route_table_id = "${aws_route_table.nat-terra.id}"
 }
-
